@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark: #16181E;
+  --color-darker: #0E1014;
+  --color-lead: #222630;
+  --color-lead-light: #4A5463;
+  --color-lead-bright: #5B6577;
+  --color-purple: #6B009C;
+  --color-purple-light: #A855F7;
+  --color-purple-dark: #40005D;
+  --color-yellow: #F5B800;
+  --color-yellow-light: #FFD84D;
+  --color-yellow-dark: #D9A000;
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+}
+
+/* Glassmorphism Header */
+.header-scrolled {
+  background: rgba(22, 24, 30, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(107, 0, 156, 0.3);
+}
+
+.glass-card {
+  background: rgba(34, 38, 48, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(107, 0, 156, 0.35);
+}
+
+/* Glow Effects */
+.glow-text {
+  text-shadow: 0 0 25px rgba(245, 184, 0, 0.4);
+}
+
+.glow-purple {
+  text-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+}
+
+.glow-button {
+  box-shadow: 0 0 20px rgba(107, 0, 156, 0.5);
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 25px rgba(245, 184, 0, 0.7);
+}
+
+.glow-gold-button {
+  box-shadow: 0 0 20px rgba(245, 184, 0, 0.4);
+}
+
+.glow-gold-button:hover {
+  box-shadow: 0 0 30px rgba(245, 184, 0, 0.7);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #16181E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4A5463;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6B009C;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.02); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
+}
