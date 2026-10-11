@@ -3,6 +3,13 @@ import type { UserProfile, Reward, PointTransaction, Visit, TierConfig } from '.
 export const AVATAR_HOMBRE = 'https://wdirdbryxwtbnprbrkvh.supabase.co/storage/v1/object/public/PremiumGym_hy/avatarHombre.webp';
 export const AVATAR_MUJER = 'https://wdirdbryxwtbnprbrkvh.supabase.co/storage/v1/object/public/PremiumGym_hy/avatarMujer.webp';
 
+export const getAvatarForName = (name: string): string => {
+  const nameLower = name.toLowerCase();
+  const femaleKeywords = ['maria', 'maría', 'lucia', 'lucía', 'ana', 'sofia', 'sofía', 'carla', 'valeria', 'elena', 'camila', 'laura', 'rosa', 'mujer', 'fernanda', 'andrea', 'patricia'];
+  const isFemale = femaleKeywords.some((keyword) => nameLower.includes(keyword));
+  return isFemale ? AVATAR_MUJER : AVATAR_HOMBRE;
+};
+
 export const INITIAL_DEMO_USERS: UserProfile[] = [
   {
     id: 'user-alexis',

@@ -12,7 +12,8 @@ import {
   INITIAL_DEMO_USERS, 
   INITIAL_REWARDS, 
   INITIAL_TRANSACTIONS, 
-  INITIAL_VISITS 
+  INITIAL_VISITS,
+  getAvatarForName
 } from '../data/mockData';
 
 interface ToastNotice {
@@ -48,12 +49,20 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY = 'premium_gym_club_demo_v1';
+const LOCAL_STORAGE_KEY = 'premium_gym_club_demo_v3';
+
+// Enforce gender avatars based on user name
+const sanitizeUserAvatars = (users: UserProfile[]): UserProfile[] => {
+  return users.map((u) => ({
+    ...u,
+    avatar: getAvatarForName(u.name),
+  }));
+};
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
-  const [demoUsers, setDemoUsers] = useState<UserProfile[]>(INITIAL_DEMO_USERS);
+  const [demoUsers, setDemoUsers] = useState<UserProfile[]>(sanitizeUserAvatars(INITIAL_DEMO_USERS));
   const [rewards, setRewards] = useState<Reward[]>(INITIAL_REWARDS);
   const [transactionsMap, setTransactionsMap] = useState<Record<string, PointTransaction[]>>(INITIAL_TRANSACTIONS);
   const [visitsMap, setVisitsMap] = useState<Record<string, Visit[]>>(INITIAL_VISITS);
@@ -67,13 +76,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.demoUsers) setDemoUsers(parsed.demoUsers);
+        if (parsed.demoUsers) {
+          const sanitized = sanitizeUserAvatars(parsed.demoUsers);
+          setDemoUsers(sanitized);
+        }
         if (parsed.rewards) setRewards(parsed.rewards);
         if (parsed.transactionsMap) setTransactionsMap(parsed.transactionsMap);
         if (parsed.visitsMap) setVisitsMap(parsed.visitsMap);
         if (parsed.activeUserId) {
           const user = parsed.demoUsers?.find((u: UserProfile) => u.id === parsed.activeUserId);
-          if (user) setCurrentUser(user);
+          if (user) {
+            setCurrentUser({
+              ...user,
+              avatar: getAvatarForName(user.name),
+            });
+          }
         }
       }
     } catch (e) {
@@ -90,10 +107,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     activeUserId?: string | null
   ) => {
     try {
+      const sanitizedUsers = sanitizeUserAvatars(users);
       localStorage.setItem(
         LOCAL_STORAGE_KEY,
         JSON.stringify({
-          demoUsers: users,
+          demoUsers: sanitizedUsers,
           rewards: rews,
           transactionsMap: txs,
           visitsMap: vsts,
@@ -130,6 +148,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const sorted = [...users].sort((a, b) => b.points - a.points);
     return sorted.map((user, index) => ({
       ...user,
+      avatar: getAvatarForName(user.name),
       rank: index + 1,
       tier: calculateTier(user.points),
     }));
@@ -137,7 +156,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const loginDemo = (userId: string = 'user-alexis') => {
     const targetUser = demoUsers.find((u) => u.id === userId) || demoUsers[0];
-    setCurrentUser(targetUser);
+    const sanitizedUser = {
+      ...targetUser,
+      avatar: getAvatarForName(targetUser.name),
+    };
+    setCurrentUser(sanitizedUser);
     setActiveTab('dashboard');
     saveState(demoUsers, rewards, transactionsMap, visitsMap, targetUser.id);
     showToastNotice(
@@ -156,7 +179,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const switchDemoUser = (userId: string) => {
     const targetUser = demoUsers.find((u) => u.id === userId);
     if (!targetUser) return;
-    setCurrentUser(targetUser);
+    const sanitizedUser = {
+      ...targetUser,
+      avatar: getAvatarForName(targetUser.name),
+    };
+    setCurrentUser(sanitizedUser);
     saveState(demoUsers, rewards, transactionsMap, visitsMap, targetUser.id);
     showToastNotice(
       'Perfil cambiado',
@@ -212,6 +239,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const updatedUser: UserProfile = {
       ...currentUser,
+      avatar: getAvatarForName(currentUser.name),
       points: currentUser.points + 1,
       totalEarned: currentUser.totalEarned + 1,
       visitsCount: currentUser.visitsCount + 1,
@@ -299,6 +327,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const updatedUser: UserProfile = {
       ...currentUser,
+      avatar: getAvatarForName(currentUser.name),
       points: updatedUserPoints,
       totalSpent: currentUser.totalSpent + reward.pointsCost,
     };
@@ -347,25 +376,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       ...currentUser,
       name,
       phone,
+      avatar: getAvatarForName(name),
     };
 
     const updatedUsersList = demoUsers.map((u) => (u.id === currentUser.id ? updatedUser : u));
+    const sanitizedList = sanitizeUserAvatars(updatedUsersList);
     setCurrentUser(updatedUser);
-    setDemoUsers(updatedUsersList);
-    saveState(updatedUsersList, rewards, transactionsMap, visitsMap, currentUser.id);
+    setDemoUsers(sanitizedList);
+    saveState(sanitizedList, rewards, transactionsMap, visitsMap, currentUser.id);
 
     showToastNotice('Perfil actualizado', 'Tus datos de demostración han sido guardados.', 'success');
   };
 
   const resetDemoData = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
-    setDemoUsers(INITIAL_DEMO_USERS);
+    const sanitizedInitial = sanitizeUserAvatars(INITIAL_DEMO_USERS);
+    setDemoUsers(sanitizedInitial);
     setRewards(INITIAL_REWARDS);
     setTransactionsMap(INITIAL_TRANSACTIONS);
     setVisitsMap(INITIAL_VISITS);
 
     if (currentUser) {
-      const resetUser = INITIAL_DEMO_USERS.find((u) => u.id === currentUser.id) || INITIAL_DEMO_USERS[0];
+      const resetUser = sanitizedInitial.find((u) => u.id === currentUser.id) || sanitizedInitial[0];
       setCurrentUser(resetUser);
     }
 
