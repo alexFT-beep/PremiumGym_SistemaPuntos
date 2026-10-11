@@ -80,8 +80,16 @@ const AppContent: React.FC = () => {
             &copy; 2026 Premium Gym. Plataforma de Puntos y Fidelización.
           </p>
 
-          <p className="text-[11px] text-gray-400">
-            Diseñado para dominar • Modo Demostración
+          <p className="text-xs text-gray-400 font-light tracking-wide">
+            Sistema de puntos de fidelidad hecha por{' '}
+            <a
+              href="https://mywebsite-agency.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow font-semibold hover:text-purple-light hover:underline transition-colors duration-300"
+            >
+              @MyWebsite
+            </a>
           </p>
         </div>
       </footer>

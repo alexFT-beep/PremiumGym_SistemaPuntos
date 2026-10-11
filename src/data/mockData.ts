@@ -1,12 +1,15 @@
 import type { UserProfile, Reward, PointTransaction, Visit, TierConfig } from '../types';
 
+export const AVATAR_HOMBRE = 'https://wdirdbryxwtbnprbrkvh.supabase.co/storage/v1/object/public/PremiumGym_hy/avatarHombre.webp';
+export const AVATAR_MUJER = 'https://wdirdbryxwtbnprbrkvh.supabase.co/storage/v1/object/public/PremiumGym_hy/avatarMujer.webp';
+
 export const INITIAL_DEMO_USERS: UserProfile[] = [
   {
     id: 'user-alexis',
     name: 'Alexis Flores',
     email: 'alexis.flores.demo@gmail.com',
     phone: '+51 936 040 884',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop',
+    avatar: AVATAR_HOMBRE,
     points: 1250,
     totalEarned: 1650,
     totalSpent: 400,
@@ -22,7 +25,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     name: 'María Ramos',
     email: 'maria.ramos.demo@gmail.com',
     phone: '+51 912 345 678',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=250&auto=format&fit=crop',
+    avatar: AVATAR_MUJER,
     points: 2100,
     totalEarned: 2400,
     totalSpent: 300,
@@ -38,7 +41,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     name: 'Carlos Mendoza',
     email: 'carlos.mendoza.demo@gmail.com',
     phone: '+51 923 456 789',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=250&auto=format&fit=crop',
+    avatar: AVATAR_HOMBRE,
     points: 1750,
     totalEarned: 2050,
     totalSpent: 300,
@@ -54,7 +57,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     name: 'Lucía Paredes',
     email: 'lucia.p.demo@gmail.com',
     phone: '+51 934 567 890',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=250&auto=format&fit=crop',
+    avatar: AVATAR_MUJER,
     points: 950,
     totalEarned: 1150,
     totalSpent: 200,
@@ -70,7 +73,7 @@ export const INITIAL_DEMO_USERS: UserProfile[] = [
     name: 'Diego Torres',
     email: 'diego.torres.demo@gmail.com',
     phone: '+51 945 678 901',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=250&auto=format&fit=crop',
+    avatar: AVATAR_HOMBRE,
     points: 420,
     totalEarned: 420,
     totalSpent: 0,
@@ -91,7 +94,7 @@ export const INITIAL_REWARDS: Reward[] = [
     pointsCost: 300,
     category: 'descuento',
     badge: 'Popular',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=400&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
     stock: 15,
     isPopular: true,
   },

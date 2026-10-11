@@ -150,9 +150,20 @@ export const WelcomeScreen: React.FC = () => {
         </div>
 
         {/* Footer Credit */}
-        <p className="text-center text-xs text-gray-400 font-light mt-6">
-          &copy; 2026 Premium Gym Club • Todos los derechos reservados.
-        </p>
+        <div className="text-center text-xs text-gray-400 font-light mt-6 space-y-1">
+          <p>&copy; 2026 Premium Gym Club • Todos los derechos reservados.</p>
+          <p className="text-xs text-gray-400 font-light tracking-wide">
+            Sistema de puntos de fidelidad hecha por{' '}
+            <a
+              href="https://mywebsite-agency.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow font-semibold hover:text-purple-light hover:underline transition-colors duration-300"
+            >
+              @MyWebsite
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
